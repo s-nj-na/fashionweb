@@ -1,9 +1,0 @@
-{% extends 'base.html'%}
-{% block  content %}
-<h2> Task Name : {{ task.title }} </h2>
-<hr>
-<p><strong>Description:</strong><br> {{ task.description }}</p>
-<p><small style ="color :antiquewhite;">Created on: {{ task.created_at }}</small></p>
-<br>
-<a href="{% url 'hello' %}" style ="padding: 10px;background-color: #333;color: white;">Back to List</a>
-{% endblock %}

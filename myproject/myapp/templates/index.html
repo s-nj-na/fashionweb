@@ -4,84 +4,70 @@
 {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css'%}">
-    <link rel="stylesheet" href="{% static 'css/style.css'%}">
-    <title>FASHION STORE</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link  rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>TASTY CAFE..</title>
 </head>
 <body>
-     
-   <!..nav bar...>
-
-   <nav class="navbar navbar-expand-lg navbar-light bg-warning fixed-top">
+  <!--NAV_BAR-->
+<nav class="navbar navbar-expand-lg bg-warning fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand text-black fw-bold" href="#">FASHION</a>
+    <a class="navbar-brand text-white fw-bold" href="#">FASHION STORE</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#carouselExampleDark">Home</a>
+          <a class="nav-link active text-white" aria-current="page" href="#carouselExampleCaptions">HOME</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#order">Orders</a>
+          <a class="nav-link text-white" href="#order">ORDERS</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Deals
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            DEALS
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item text-white" href="#">Action</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
+        <!--authentication-->
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 me-3">
+        {% if user.is_authenticated %}
+          <li class="nav-item d-flex align-items-center">
+            <span class="nav-link text-white fw-semibold me-2">Welcome, {{ user.username }}!</span>
+          </li>
+          <li class="nav-item">
+            <form action="{% url 'logout' %}" method="POST" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-light btn-sm px-3" style="border-radius: 20px;">LOGOUT</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link text-white me-2" href="{% url 'login' %}">LOGIN</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-light btn-sm text-dark px-3 fw-bold" href="{% url 'signup' %}" style="border-radius: 20px;">SIGN UP</a>
+          </li>
+        {% endif %}
+      </ul>
         <li class="nav-item">
-          <a class="nav-link " href="#footer" aria-disabled="true">Location</a>
+          <a class="nav-link text-white" href="#footer" aria-disabled="true">LOCATION</a>
         </li>
       </ul>
-      
-     <form class="d-flex me-3" role="search">
-  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-  <button class="btn btn-success" type="submit">Search</button>
-</form>
-
-<div class="d-flex align-items-center">
-
-{% if user.is_authenticated %}
-
-    <span class="me-3">
-        Welcome, {{ user.username }}!
-    </span>
-
-    <form action="{% url 'logout' %}" method="POST" style="display:inline;">
-        {% csrf_token %}
-        <button class="btn btn-danger" type="submit">
-            Logout
-        </button>
-    </form>
-
-{% else %}
-
-    <a href="{% url 'login' %}" class="btn btn-primary me-2">
-        Login
-    </a>
-
-    <a href="{% url 'signup' %}" class="btn btn-success">
-        Signup
-    </a>
-
-{% endif %}
-
-</div> 
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-success" type="submit">Search</button>
+      </form>
     </div>
   </div>
-  
 </nav>
 
-{% block content %}
-{% endblock %}
 
 <!-- carousel... -->
 
@@ -126,13 +112,18 @@
 
 
 
-<!-- orders... -->
+<!-- Order Section -->
 
-
-
+{% if user.is_authenticated %}
 
 <div class="container" id="order">
-    <h1 class="text-center">ORDER YOUR FASHION ITEMS NOW....!</h1>
+    <h1 class="text-center">ORDER YOUR PRODUCTS NOW....!</h1>
+
+    <div class="mb-3">
+        <a href="{% url 'add_product' %}" class="btn btn-success btn-sm">
+            + Add Product
+        </a>
+    </div>
 
     <div class="row">
 
@@ -141,36 +132,36 @@
         <div class="col-md-4 my-3">
             <div class="card text-center border-2 border-warning h-100">
 
-                <!-- item Image -->
                 <img src="{{ item.image.url }}"
                      class="card-img-top"
                      alt="{{ item.title }}"
-                     style="height: 400px; object-fit: cover;">
+                     style="height:220px; object-fit:cover;">
 
-                <div class="card-body d-flex flex-column">
+                <div class="card-body">
+                    <h5>{{ item.title }}</h5>
 
-                    <!-- item Title -->
-                    <h5 class="card-title">
-                        {{ item.title }}
+                    <p>{{ item.description }}</p>
+
+                    <h5 class="text-danger">
+                        Rs: {{ item.price }}
                     </h5>
+                    <a href="#"
+                      class="btn btn-primary btn-sm"
+                      onclick="alert('Thank you, {{ user.username }}! Your {{ item.title }} order has been placed successfully. 😊\n\nWe will deliver it soon.')">
+                        Order Now
+                    </a>
 
-                    <!-- item Description -->
-                    <p class="card-text">
-                        {{ item.description }}
-                    </p>
+                    <a href="{% url 'edit_product' item.id %}"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
 
-                    <!-- Price + Button -->
-                    <div class="mt-auto">
-                        <h5 class="text-danger">
-                            Rs: {{ item.price }}
-                        </h5>
-
-                        <a href="#" class="btn btn-primary">
-                            Order Now
-                        </a>
-                    </div>
-
+                    <a href="{% url 'delete_product' item.id %}"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
                 </div>
+
             </div>
         </div>
 
@@ -179,13 +170,40 @@
     </div>
 </div>
 
+{% else %}
 
-  
-    
-    <!...Bootstarp js files...>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<div class="container mt-5">
+    <h3 class="text-center text-danger">
+        Please Login or Sign Up to View our Products and Place Orders.
+    </h3>
+</div>
 
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endif %}
+ <!--footer-->
+
+<div class="container-fluid  bg-warning" id="footer">
+  <div class="row">
+    <h1 class="text-center">LOCATION</h1>
+    <div class="col-6">
+      <h1 class="text-white">FASHION STORE</h1>
+      <h4>Kochi</h4>
+      <h4>Kerala</h4>
+      <p>Tel: 04864 022335</p>
+      <p>Email: fashionstore@email.com</p>
+      <p>Website: www.fashionstore.com</p>
+    </div>
+    <div class="col-md-6 text-end">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d251479.4974783002!2d76.13730669065167!3d9.986500065067563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b080d514abec6bf%3A0xbd582caa5844192!2sKochi%2C%20Kerala!5e0!3m2!1sen!2sin!4v1778521121421!5m2!1sen!2sin" width="300" height="300" style="border: 1px;;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</div>
+
+<!--boostrap js-->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+  <script src="{% static 'js/bootstrap.js' %}"></script>
 
 </body>
 </html>
+</div>
+</div>

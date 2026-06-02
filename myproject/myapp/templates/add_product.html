@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+</head>
+<body>
+
+<h2>Add Product</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label>Title:</label>
+    <input type="text" name="title"><br><br>
+
+    <label>Description:</label>
+    <textarea name="description"></textarea><br><br>
+
+    <label>Price:</label>
+    <input type="number" name="price"><br><br>
+
+    <label>Image:</label>
+    <input type="file" name="image"><br><br>
+
+    <button type="submit">Save Food</button>
+
+</form>
+
+</body>
+</html>
