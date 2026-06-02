@@ -77,7 +77,7 @@
   }
 </style>
 
-<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="3000">
+<div id="carouselExampleDark" class="carousel carousel-dark slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -212,6 +212,17 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
   <script src="{% static 'js/bootstrap.js' %}"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var myCarousel = document.querySelector('#carouselExampleDark');
+      var carousel = new bootstrap.Carousel(myCarousel, {
+        interval: 3000,
+        ride: 'carousel'
+      });
+      carousel.cycle();
+    });
+  </script>
 
 </body>
 </html>
