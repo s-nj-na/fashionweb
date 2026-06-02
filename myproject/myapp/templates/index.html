@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link  rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>TASTY CAFE..</title>
+    <title>FASHION STORE</title>
 </head>
 <body>
   <!--NAV_BAR-->
@@ -119,11 +119,13 @@
 <div class="container" id="order">
     <h1 class="text-center">ORDER YOUR PRODUCTS NOW....!</h1>
 
+    {% if user.is_staff %}
     <div class="mb-3">
         <a href="{% url 'add_product' %}" class="btn btn-success btn-sm">
             + Add Product
         </a>
     </div>
+    {% endif %}
 
     <div class="row">
 
@@ -151,6 +153,7 @@
                         Order Now
                     </a>
 
+                    {% if user.is_staff %}
                     <a href="{% url 'edit_product' item.id %}"
                        class="btn btn-warning btn-sm">
                         Edit
@@ -160,6 +163,7 @@
                        class="btn btn-danger btn-sm">
                         Delete
                     </a>
+                    {% endif %}
                 </div>
 
             </div>
@@ -205,5 +209,3 @@
 
 </body>
 </html>
-</div>
-</div>

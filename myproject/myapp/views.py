@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from .models import Fashion
 
 def order(request):
@@ -45,6 +46,7 @@ def logout(request):
 
     return redirect('home')
 
+@login_required
 def add_product(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -58,6 +60,7 @@ def add_product(request):
         return redirect('home')
     return render(request, 'add_product.html')
 
+@login_required
 def edit_product(request, id):
     fashion = Fashion.objects.get(id=id)
     if request.method == 'POST':
@@ -70,6 +73,7 @@ def edit_product(request, id):
         return redirect('home')
     return render(request, 'edit_product.html', {'fashion': fashion})
 
+@login_required
 def delete_product(request, id):
     fashion = Fashion.objects.get(id=id)
     if request.method == 'POST':
