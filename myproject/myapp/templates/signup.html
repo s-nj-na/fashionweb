@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block content %}
+    <h2>CREATE NEW ACCOUNT</h2>
+    <div style = "background-color: #f0f0f0; padding: 20px;width:350px;">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="padding:10px;background-color: #28a745; color: white;">Signup</button>
+    </form>
+    </div>
+<p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+{% endblock %}

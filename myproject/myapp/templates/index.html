@@ -41,13 +41,47 @@
           <a class="nav-link " href="#footer" aria-disabled="true">Location</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-success" type="submit">Search</button>
-      </form>
+      
+     <form class="d-flex me-3" role="search">
+  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+  <button class="btn btn-success" type="submit">Search</button>
+</form>
+
+<div class="d-flex align-items-center">
+
+{% if user.is_authenticated %}
+
+    <span class="me-3">
+        Welcome, {{ user.username }}!
+    </span>
+
+    <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">
+            Logout
+        </button>
+    </form>
+
+{% else %}
+
+    <a href="{% url 'login' %}" class="btn btn-primary me-2">
+        Login
+    </a>
+
+    <a href="{% url 'signup' %}" class="btn btn-success">
+        Signup
+    </a>
+
+{% endif %}
+
+</div> 
     </div>
   </div>
+  
 </nav>
+
+{% block content %}
+{% endblock %}
 
 <!-- carousel... -->
 
