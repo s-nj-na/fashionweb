@@ -1,42 +1,16 @@
-from django.shortcuts import render , redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Fashion
-from .forms import FashionForm
 
-from django.views.generic import ListView,DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
-# Create your views here.
-class TaskListView(LoginRequiredMixin,ListView):
-    model=Fashion
-    template_name='hello'
-    context_object_name='fashions_list'
-
-    def get_context_data(self, **kwargs):
-         context = super().get_context_data(**kwargs)
-         context['task_form']=FashionForm()
-         return context
-    
-    def post(self,request,*args,**kwargs):
-      form=FashionForm(request.POST)
-      if form.is_valid():
-            form.save()
-            return redirect('hello')
-      
-      return self.get(request,*args,**kwargs)
-
-class TaskDetailView(LoginRequiredMixin,DetailView):
-    model=Fashion 
-    template_name='fashion_details.html'   
-    context_object_name='fashion'
+def order(request):
+    fashion_items = Fashion.objects.all()
+    return render(request, 'order.html', {'fashion_items': fashion_items})
 
 
-
-
-
-
+def home(request):
+    fashion_items = Fashion.objects.all()
+    return render(request, 'index.html', {'fashion_items': fashion_items})
 
 
 def signup(request):
@@ -44,10 +18,61 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('hello')
+            auth_login(request, user)
+            return redirect('home')
     else:
         form = UserCreationForm()
+
     return render(request, 'signup.html', {'form': form})
-    
-# Create your views here.
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('home')
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'login.html', {'form': form})
+
+
+def logout(request):
+    if request.method == 'POST':
+        auth_logout(request)
+
+    return redirect('home')
+
+def add_product(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        image = request.FILES.get('image')
+
+        fashion = Fashion(title=title, description=description, price=price, image=image)
+        fashion.save()
+
+        return redirect('home')
+    return render(request, 'add_product.html')
+
+def edit_product(request, id):
+    fashion = Fashion.objects.get(id=id)
+    if request.method == 'POST':
+        fashion.title = request.POST.get('title')
+        fashion.description = request.POST.get('description')
+        fashion.price = request.POST.get('price')
+        if request.FILES.get('image'):
+            fashion.image = request.FILES.get('image')
+        fashion.save()
+        return redirect('home')
+    return render(request, 'edit_product.html', {'fashion': fashion})
+
+def delete_product(request, id):
+    fashion = Fashion.objects.get(id=id)
+    if request.method == 'POST':
+        fashion.delete()
+        return redirect('home')
+    return render(request, 'delete_product.html', {'fashion': fashion})

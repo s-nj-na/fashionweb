@@ -1,13 +1,22 @@
-{% extends "index.html" %}
+{% extends 'base.html' %}
 
-   { {% block content %}
-        <h2>Login</h2>
-        <div style ="background-color: black; padding: 20px; width: 300px; ">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Login</button>
-            </form>
-        </div>
-            
-    {% endblock %}}
+{% block content %}
+
+<h2>Login To Your Account</h2>
+
+<div style="background-color: greenyellow; padding: 20px; width: 300px;">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="padding: 10px; background-color: #007bff; color: white;">
+            Login
+        </button>
+    </form>
+
+    <p>
+        Don't have an account?
+        <a href="{% url 'signup' %}">Sign up here</a>
+    </p>
+</div>
+
+{% endblock %}
