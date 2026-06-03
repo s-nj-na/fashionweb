@@ -25,7 +25,9 @@
                     <div class="mt-auto">
                         <!-- 4. Display Price dynamically -->
                         <h5 class="text-danger">Rs: {{ item.price }}</h5>
+                        {% if not user.is_staff %}
                         <a href="#" class="btn btn-primary">Order Now</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

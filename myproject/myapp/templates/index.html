@@ -154,11 +154,13 @@
                     <h5 class="text-danger">
                         Rs: {{ item.price }}
                     </h5>
+                    {% if not user.is_staff %}
                     <a href="#"
                       class="btn btn-primary btn-sm"
                       onclick="alert('Thank you, {{ user.username }}! Your {{ item.title }} order has been placed successfully. 😊\n\nWe will deliver it soon.')">
                         Order Now
                     </a>
+                    {% endif %}
 
                     {% if user.is_staff %}
                     <a href="{% url 'edit_product' item.id %}"
