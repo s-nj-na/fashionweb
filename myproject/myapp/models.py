@@ -18,3 +18,10 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
+from django.contrib.auth.models import User
+
+class PendingEmployee(User):
+    class Meta:
+        proxy = True
+        verbose_name = 'Pending Employee'
+        verbose_name_plural = 'Pending Employees'

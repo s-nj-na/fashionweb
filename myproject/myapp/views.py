@@ -40,7 +40,7 @@ def signup(request):
                 user.is_active = True
                 user.save()
                 auth_login(request, user)
-                return redirect('task_list')
+                return redirect('home')
     else:
         form = UserCreationForm()
 
@@ -52,7 +52,7 @@ class PendingApprovalView(TemplateView):
 class RoleBasedLoginView(LoginView):
     template_name = 'login.html'
     def get_success_url(self):
-        return reverse_lazy('task_list')
+        return reverse_lazy('home')
 
 @login_required
 def add_product(request):
