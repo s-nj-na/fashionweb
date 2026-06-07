@@ -5,25 +5,20 @@
     <h1 class="text-center">ORDER YOUR PRODUCTS NOW....!</h1>
     <div class="row">
 
-        <!-- This loops through the 'products' list we sent from views.py -->
         {% for item in fashion_items %}
-        <div class="col-md-4 my-3">
+        <div class="col-md-3 my-3">
             <div class="card text-center border-2 border-warning h-100">
                 
-                <!-- 1. Display Image dynamically -->
                 {% if item.image %}
-                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}" style="height: 220px; object-fit: cover;">
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}" style="aspect-ratio: 4 / 3; object-fit: contain;">
                 {% endif %}
 
                 <div class="card-body d-flex flex-column">
-                    <!-- 2. Display Title dynamically -->
                     <h5 class="card-title">{{ item.title }}</h5>
 
-                    <!-- 3. Display Description dynamically -->
                     <p class="card-text">{{ item.description }}</p>
 
                     <div class="mt-auto">
-                        <!-- 4. Display Price dynamically -->
                         <h5 class="text-danger">Rs: {{ item.price }}</h5>
                         {% if not user.is_staff %}
                         <a href="#" class="btn btn-primary">Order Now</a>
@@ -33,9 +28,8 @@
             </div>
         </div>
         {% empty %}
-        <!-- This shows up if Django connects to the view fine, but finds 0 database items -->
         <div class="text-center w-100 my-5">
-            <p class="text-muted">No productsfound in the database. Check your spelling or model name!</p>
+            <p class="text-muted">No products found in the database. Check your spelling or model name!</p>
         </div>
         {% endfor %}
 
